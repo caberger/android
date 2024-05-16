@@ -1,6 +1,6 @@
 # Jetpack Compose in Java
 
-This app demonstrates how to use well established java jakarta practices to implement a reactive Android Jetpack Compose Application using java instead of Kotlin [^compose].
+This app demonstrates how to use well established java jakarta practices to implement a reactive Android Jetpack Compose Application using java [^compose].
 
 The following enterprise API are used
 
@@ -29,4 +29,4 @@ gradle wrapper
 
 Then you can built the project either from the command line with ./gradlew or use Andriod Studio.
 
-[^compose]: Except in the composable view files where kotlin replaces the .xml in layout files
+[^compose]: except for the Composables where kotlin is used in the layout files instead of .xml
