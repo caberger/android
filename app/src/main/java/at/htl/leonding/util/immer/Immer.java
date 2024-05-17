@@ -1,13 +1,15 @@
 package at.htl.leonding.util.immer;
 
+import android.os.Handler;
+import android.os.Looper;
+
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import at.htl.leonding.util.mapper.Mapper;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
 /** Immer simplifies handling immutable data structures.
  * @author Christian Aberger (http://www.aberger.at)
@@ -19,23 +21,26 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject;
 @Singleton
 public class Immer<T> {
     final Mapper<T> mapper;
+    Handler mainHandler = new Handler(Looper.getMainLooper());
 
     @Inject
     public Immer(Class<? extends T> type) {
         mapper = new Mapper<T>(type);
     }
-    /** Create a deep clone of the existing model.
-     * To avoid multithreading issues we change things only running on the one and only Main thread of the app.
-     * @param readonlyState the previous readonly single source or truth
-     * @param recipe the callback function that modifies the cloned state
+    /** Create a deep clone of the existing model, apply a recipe to it and finally pass the new state to the consumer.
+     * To reduce the load on the main thread we clone the current state in a separate thread.
+     * To avoid multithreading issues we call back the recipe and resultConsumer running on the one and only Main thread of the app.
+     * @param currentState the previous readonly single source or truth
+     * @param recipe the callback function that modifies parts of the cloned state
      * @param resultConsumer the callback function that uses the cloned & modified model
      */
-    public void produce(final T readonlyState, Consumer<T> recipe, Consumer<T> resultConsumer) {
-        var nextState = mapper.clone(readonlyState);
-        var threadSafe = BehaviorSubject.createDefault(nextState);
-        threadSafe.observeOn(AndroidSchedulers.mainThread()).subscribe(model -> {
-            recipe.accept(model);
-            resultConsumer.accept(model);
+    public void produce(final T currentState, Consumer<T> recipe, Consumer<T> resultConsumer) {
+        Consumer<T> runOnMainThread = t -> mainHandler.post(() -> {
+            recipe.accept(t);
+            resultConsumer.accept(t);
         });
+        CompletableFuture
+                .supplyAsync(() -> mapper.clone(currentState))
+                .thenAccept(runOnMainThread);
     }
 }

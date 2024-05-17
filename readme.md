@@ -27,6 +27,6 @@ Before opening the project in Android Studio for the first time, run the followi
 gradle wrapper
 ```
 
-Then you can built the project either from the command line with ./gradlew or use Andriod Studio.
+Then you can built the project either from the command line with ./gradlew or use Android Studio.
 
 [^compose]: except for the Composables where kotlin is used in the layout files instead of .xml

@@ -23,7 +23,7 @@ public class ToDoService {
     }
     public void getAll() {
         CompletableFuture
-                .supplyAsync(() -> toDoClient.all())
+                .supplyAsync(toDoClient::all)
                 .thenAccept(store::setTodos);
     }
 }
