@@ -6,9 +6,6 @@ import android.os.Looper;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import at.htl.leonding.util.mapper.Mapper;
 
 /** Immer simplifies handling immutable data structures.
@@ -18,14 +15,14 @@ import at.htl.leonding.util.mapper.Mapper;
  *
  * @param <T> The type of the baseState
  */
-@Singleton
+
 public class Immer<T> {
     final Mapper<T> mapper;
-    Handler mainHandler = new Handler(Looper.getMainLooper());
+    final Handler handler;
 
-    @Inject
     public Immer(Class<? extends T> type) {
         mapper = new Mapper<T>(type);
+        handler = new Handler(Looper.getMainLooper());
     }
     /** Create a deep clone of the existing model, apply a recipe to it and finally pass the new state to the consumer.
      * To reduce the load on the main thread we clone the current state in a separate thread.
@@ -35,7 +32,7 @@ public class Immer<T> {
      * @param resultConsumer the callback function that uses the cloned & modified model
      */
     public void produce(final T currentState, Consumer<T> recipe, Consumer<T> resultConsumer) {
-        Consumer<T> runOnMainThread = t -> mainHandler.post(() -> {
+        Consumer<T> runOnMainThread = t -> handler.post(() -> {
             recipe.accept(t);
             resultConsumer.accept(t);
         });

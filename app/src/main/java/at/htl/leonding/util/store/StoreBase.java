@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject;
  */
 public class StoreBase<T> {
     public final BehaviorSubject<T> pipe;
-    public final Immer<T> immer;
+    protected final Immer<T> immer;
 
     protected StoreBase(Class<? extends T> type, T initialState) {
         try {

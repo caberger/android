@@ -15,6 +15,9 @@ import javax.inject.Singleton;
 
 import jakarta.ws.rs.client.ClientBuilder;
 
+/** Build a RestEasy Client with reduced dependencies on a lot of the standard Java Runtime classes so that it works even on the Android Java Runtime.
+ * @author Christian Aberger (http://www.aberger.at)
+ */
 @Singleton
 public class RestApiClientBuilder {
     final public ScheduledExecutorService scheduledExecutorService;
