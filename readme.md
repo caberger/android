@@ -9,13 +9,13 @@ The following enterprise APIs are used
 - [Jakarta Dependency Injection](https://projects.eclipse.org/projects/ee4j.cdi) implemented with Dagger Hilt
 - [RxJava](https://reactivex.io/) to handle the Single [Source Of Truth](https://redux.js.org/understanding/thinking-in-redux/motivation) design pattern (see also [Immer.java](./app/src/main/java/at/htl/leonding/util/immer/Immer.java))
 
-We follow a [Single Source Of Truth Application Design](https://redux.js.org/understanding/thinking-in-redux/three-principles)
+We follow a [Single Source Of Truth](https://redux.js.org/understanding/thinking-in-redux/three-principles) Application Design
 using the [Motivation](https://redux.js.org/understanding/thinking-in-redux/motivation) from the [Three Principles](https://redux.js.org/understanding/thinking-in-redux/three-principles)
 and the ease of use of [immerjs](https://immerjs.github.io/immer/).
 
 ## About the Application
 
-The application uses a rest client to download todos from json-placeholder and displays these in a table in a tabbed layout, also showing that the single source
+The application uses a rest client to download todos from [json-placeholder](https://jsonplaceholder.typicode.com/) and displays these in a table in a tabbed layout, also showing that the single source
 of truth design always automatically keeps the badge showing the number of todos correct.
 
 ## Building
