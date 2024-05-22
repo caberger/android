@@ -31,7 +31,10 @@ class MainViewBuilder {
     fun setContentOfActivity(activity: ComponentActivity) {
         val view = ComposeView(activity)
         view.setContent {
-            val viewModel = store.pipe.observeOn(AndroidSchedulers.mainThread()).subscribeAsState(initial = Model()).value
+            val viewModel = store.pipe
+                .observeOn(AndroidSchedulers.mainThread())
+                .distinctUntilChanged()
+                .subscribeAsState(initial = Model()).value
             Surface(
                 modifier = Modifier.fillMaxSize()
             ) {

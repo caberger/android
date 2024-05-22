@@ -5,7 +5,7 @@ This app demonstrates how to use well established java jakarta practices to impl
 The following enterprise APIs are used
 
 - [Microprofile config](https://microprofile.io/specifications/microprofile-config/) to store configuration settings in application.properties
-- [Microprofile rest client](https://microprofile.io/specifications/microprofile-rest-client/) to consume rest - apis unsin RestEasy
+- [Microprofile rest client](https://microprofile.io/specifications/microprofile-rest-client/) to consume rest - apis unsing RestEasy Client
 - [Jakarta Dependency Injection](https://projects.eclipse.org/projects/ee4j.cdi) implemented with Dagger Hilt
 - [RxJava](https://reactivex.io/) to handle the Single [Source Of Truth](https://redux.js.org/understanding/thinking-in-redux/motivation) design pattern (see also [Immer.java](./app/src/main/java/at/htl/leonding/util/immer/Immer.java))
 
