@@ -44,7 +44,7 @@ fun HomeScreen(model: Model, toDoService: ToDoService?, store: Store?) {
                 value = text.value,
                 onValueChange = {
                     text.value = it
-                    store?.apply { mdl -> mdl.homeScreenModel.greetingText = text.value }
+                    store?.apply { mdl -> mdl.homeScreenModel.greetingText = it }
                 }
             )
         }
