@@ -21,8 +21,7 @@ import at.htl.leonding.model.Store
 import at.htl.leonding.model.ToDoService
 
 /**
- * Example of an editing composable using remember.
- * @see https://medium.com/androiddevelopers/under-the-hood-of-jetpack-compose-part-2-of-2-37b2c20c6cdd
+ * Example of an editing composable using <a href="https://medium.com/androiddevelopers/under-the-hood-of-jetpack-compose-part-2-of-2-37b2c20c6cdd">remember</a>.
  */
 @Composable
 fun HomeScreen(model: Model, toDoService: ToDoService?, store: Store?) {
