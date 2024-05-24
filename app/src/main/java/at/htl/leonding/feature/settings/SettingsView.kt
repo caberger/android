@@ -1,10 +1,7 @@
-package at.htl.leonding.ui.layout
+package at.htl.leonding.feature.settings
 
 import androidx.compose.material3.Text
-import at.htl.leonding.model.Model
 
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

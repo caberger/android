@@ -1,4 +1,4 @@
-package at.htl.leonding.ui.layout
+package at.htl.leonding.feature.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,19 +18,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import at.htl.leonding.model.HomeScreenViewModel
 import javax.inject.Inject
-
-private const val TAG = "HomeScreen"
 
 /**
  * Example of an editing composable using <a href="https://medium.com/androiddevelopers/under-the-hood-of-jetpack-compose-part-2-of-2-37b2c20c6cdd">remember</a>.
  */
-class HomeScreenView {
+class HomeView {
     @Inject
-    lateinit var homeScreenViewModel: HomeScreenViewModel
+    lateinit var homeScreenViewModel: HomeViewModel
 
-    @Inject constructor() {
+    @Inject
+    constructor() {
     }
     @Composable
     fun HomeScreen() {
@@ -42,9 +40,11 @@ class HomeScreenView {
             homeScreenViewModel.setGreetingText(text.value);
         }
         Column(modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(16.dp)) {
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(16.dp)
+            ) {
                 Text(
                     text = text.value,
                     textAlign = TextAlign.Center,
@@ -55,8 +55,9 @@ class HomeScreenView {
             Row(
                 Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(16.dp)) {
-                TextField(text.value, {text.value = it })
+                    .padding(16.dp)
+            ) {
+                TextField(text.value, { text.value = it })
             }
             Row(Modifier.align(Alignment.CenterHorizontally)) {
                 Text("${size.value} Todos have been loaded")
@@ -69,11 +70,10 @@ class HomeScreenView {
             }
             Row(Modifier.align(Alignment.CenterHorizontally)) {
                 Button(
-                    onClick = { homeScreenViewModel.apply { it.todos = listOf() }  }) {
+                    onClick = { homeScreenViewModel.cleanToDos()}) {
                     Text("clean Todos")
                 }
             }
         }
     }
 }
-

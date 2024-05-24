@@ -20,11 +20,14 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Modifier
-import at.htl.leonding.model.HomeScreenViewModel
+import at.htl.leonding.feature.home.HomeViewModel
 import at.htl.leonding.model.Store
 import at.htl.leonding.ui.theme.ToDoTheme
 import javax.inject.Inject
 import androidx.compose.ui.tooling.preview.Preview
+import at.htl.leonding.feature.home.HomeView
+import at.htl.leonding.feature.settings.SettingsScreen
+import at.htl.leonding.feature.todo.ToDoView
 
 
 private val localPreviewMode: ProvidableCompositionLocal<Boolean> = compositionLocalOf { false }
@@ -33,9 +36,7 @@ class TabScreenView {
     @Inject
     lateinit var store: Store
     @Inject
-    lateinit var homeScreenViewModel: HomeScreenViewModel
-    @Inject
-    lateinit var homeScreenView: HomeScreenView
+    lateinit var homeScreenView: HomeView
     @Inject
     lateinit var toDoView: ToDoView
 

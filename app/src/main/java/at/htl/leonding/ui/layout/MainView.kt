@@ -6,10 +6,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import at.htl.leonding.model.HomeScreenViewModel
+import at.htl.leonding.feature.home.HomeViewModel
 import at.htl.leonding.model.Store
 import at.htl.leonding.model.Model
-import at.htl.leonding.model.ToDoService
+import at.htl.leonding.feature.todo.ToDoService
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,7 +24,7 @@ class MainView {
     lateinit var store: Store
 
     @Inject
-    lateinit var homeScreenViewModel: HomeScreenViewModel
+    lateinit var homeScreenViewModel: HomeViewModel
 
     @Inject
     lateinit var toDoService: ToDoService

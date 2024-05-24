@@ -1,13 +1,18 @@
-package at.htl.leonding.model;
+package at.htl.leonding.feature.todo;
 
 import org.eclipse.microprofile.config.Config;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import at.htl.leonding.model.Store;
+import at.htl.leonding.model.ToDo;
 import at.htl.leonding.util.resteasy.RestApiClientBuilder;
+
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 @Singleton
 public class ToDoService {
@@ -22,8 +27,9 @@ public class ToDoService {
         this.store = store;
     }
     public void getAll() {
+        Consumer<ToDo[]> setToDos2 = todos -> store.apply(model -> model.toDos = todos);
         CompletableFuture
                 .supplyAsync(toDoClient::all)
-                .thenAccept(store::setTodos);
+                .thenAccept(todos -> store.apply(model -> model.toDos = todos));
     }
 }
