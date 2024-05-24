@@ -1,5 +1,6 @@
-package at.htl.leonding.ui.layout
+package at.htl.leonding.feature.tabscreen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -20,7 +21,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Modifier
-import at.htl.leonding.feature.home.HomeViewModel
 import at.htl.leonding.model.Store
 import at.htl.leonding.ui.theme.ToDoTheme
 import javax.inject.Inject
@@ -28,13 +28,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import at.htl.leonding.feature.home.HomeView
 import at.htl.leonding.feature.settings.SettingsScreen
 import at.htl.leonding.feature.todo.ToDoView
-
-
-private val localPreviewMode: ProvidableCompositionLocal<Boolean> = compositionLocalOf { false }
+import at.htl.leonding.model.Model
+import at.htl.leonding.model.ToDo
 
 class TabScreenView {
+    private val localPreviewMode: ProvidableCompositionLocal<Boolean> = compositionLocalOf { false }
+    private final val TAG = TabScreenView::class.simpleName
+
     @Inject
-    lateinit var store: Store
+    lateinit var tabScreenViewModel: TabScreenViewModel
     @Inject
     lateinit var homeScreenView: HomeView
     @Inject
@@ -44,11 +46,12 @@ class TabScreenView {
 
     @Composable
     fun TabScreenLayout() {
-        val initialState = store.get()
-        var model = store.pipe.subscribeAsState(initialState).value
-        val selectedTab = remember { mutableIntStateOf(initialState.uiState.selectedTab) }
+        var model = tabScreenViewModel.pipe.subscribeAsState(initial = TabScreenViewModel.TabScreenModel())
+        val selectedTab = remember { mutableIntStateOf(model.value.selectedTab) }
+        //val numberOfTodos = remember { mutableIntStateOf(model.value.numberOfTodos) }
+        val numberOfTodos = model.value.numberOfTodos
         val tabs = listOf("Home", "ToDos", "Settings")
-
+        Log.i(TAG, "number of totos: ${numberOfTodos}")
         Column(modifier = Modifier.fillMaxWidth()) {
             TabRow(selectedTabIndex = selectedTab.value) {
                 tabs.forEachIndexed { index, title ->
@@ -56,12 +59,12 @@ class TabScreenView {
                         selected = selectedTab.value == index,
                         onClick = {
                             selectedTab.value = index
-                            store.selectTab(index)
+                            tabScreenViewModel.selectTab(index)
                         },
                         icon = {
                             when (index) {
                                 0 -> Icon(imageVector = Icons.Default.Home, contentDescription = null)
-                                1 -> BadgedBox(badge = { Badge { Text("${model.toDos.size}") }}) {
+                                1 -> BadgedBox(badge = { Badge { Text("$numberOfTodos") }}) {
                                     Icon(Icons.Filled.Favorite, contentDescription = "ToDos")
                                 }
                                 2 -> Icon(imageVector = Icons.Default.Settings, contentDescription = null)
@@ -72,8 +75,8 @@ class TabScreenView {
             }
             if (!localPreviewMode.current) {
                 when (selectedTab.value) {
-                    0 -> homeScreenView.HomeScreen()
-                    1 -> toDoView.ToDos()
+                    0 -> homeScreenView?.HomeScreen()
+                    1 -> toDoView?.ToDos()
                     2 -> SettingsScreen()
                 }
             }
@@ -82,15 +85,13 @@ class TabScreenView {
     @Composable
     fun TabScreen() {
         if (localPreviewMode.current) {
-            TabScreenLayout()
-        } else {
-            TabScreenLayout()
+            tabScreenViewModel = TabScreenViewModel(Store())
         }
+        TabScreenLayout()
     }
     @Preview(showBackground = true)
     @Composable
     fun TabScreenPreview() {
-        store = Store()
         CompositionLocalProvider(localPreviewMode provides true) {
             ToDoTheme {
                 TabScreen()

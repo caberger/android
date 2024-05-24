@@ -1,6 +1,7 @@
 # Jetpack Compose in Java
 
 This app demonstrates how to use well established java jakarta practices to implement a reactive Android Jetpack Compose Application using java [^compose].
+The App uses the Model-View-ViewModel design pattern [^mvvm].
 
 The following enterprise APIs are used
 
@@ -37,3 +38,4 @@ gradle wrapper
 Then you can built the project either from the command line with ./gradlew or use Android Studio.
 
 [^compose]: except for the Composables where kotlin is used in the layout files instead of .xml
+[^mvvm]: watch the first 17 minutes of [Lecture 3 | Stanford CS193p 2023](https://www.youtube.com/watch?v=W1ymVx6dmvc") and replace "Swift" -> Java / "SwiftUI" -> Jetpack Compose.

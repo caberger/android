@@ -33,7 +33,7 @@ class HomeView {
     @Composable
     fun HomeScreen() {
         val initialState = homeScreenViewModel.get()
-        val size = homeScreenViewModel.pipe.map { model -> model.todos.size }.subscribeAsState(0)
+        val model = homeScreenViewModel.pipe.subscribeAsState(HomeViewModel.HomeModel())
         val text = remember { mutableStateOf(initialState.greetingText) }
 
         SideEffect {
@@ -60,7 +60,7 @@ class HomeView {
                 TextField(text.value, { text.value = it })
             }
             Row(Modifier.align(Alignment.CenterHorizontally)) {
-                Text("${size.value} Todos have been loaded")
+                Text("${model.value.numberOfToDos} Todos have been loaded")
             }
             Row(Modifier.align(Alignment.CenterHorizontally)) {
                 Button(modifier = Modifier.padding(16.dp),

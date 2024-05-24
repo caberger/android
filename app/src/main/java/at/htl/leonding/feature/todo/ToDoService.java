@@ -27,9 +27,11 @@ public class ToDoService {
         this.store = store;
     }
     public void getAll() {
-        Consumer<ToDo[]> setToDos2 = todos -> store.apply(model -> model.toDos = todos);
+        Consumer<ToDo[]> setToDos = todos -> {
+            store.apply(model -> model.toDos = todos);
+        };
         CompletableFuture
                 .supplyAsync(toDoClient::all)
-                .thenAccept(todos -> store.apply(model -> model.toDos = todos));
+                .thenAccept(setToDos);
     }
 }

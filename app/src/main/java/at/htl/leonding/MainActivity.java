@@ -28,7 +28,6 @@ public class MainActivity extends ComponentActivity {
         super.onCreate(savedInstanceState);
         mainView.setContentOfActivity(this);
         Log.i(TAG, "subscribe");
-        store.pipe.subscribe(model -> Log.i(TAG, "model changed " + model.greetingModel.greetingText));
-
+        store.pipe.subscribe(model -> Log.i(TAG, String.format("model changed. Number of todos: %d ", model.toDos.length)));
     }
 }

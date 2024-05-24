@@ -7,6 +7,7 @@ import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import at.htl.leonding.feature.home.HomeViewModel
+import at.htl.leonding.feature.tabscreen.TabScreenView
 import at.htl.leonding.model.Store
 import at.htl.leonding.model.Model
 import at.htl.leonding.feature.todo.ToDoService
@@ -21,15 +22,6 @@ import javax.inject.Singleton
 @Singleton
 class MainView {
     @Inject
-    lateinit var store: Store
-
-    @Inject
-    lateinit var homeScreenViewModel: HomeViewModel
-
-    @Inject
-    lateinit var toDoService: ToDoService
-
-    @Inject
     lateinit var tabScreenView: TabScreenView
 
     @Inject
@@ -38,10 +30,6 @@ class MainView {
     fun setContentOfActivity(activity: ComponentActivity) {
         val view = ComposeView(activity)
         view.setContent {
-            val model = store.pipe
-                .observeOn(AndroidSchedulers.mainThread())
-                .distinctUntilChanged()
-                .subscribeAsState(initial = Model()).value
             Surface(
                 modifier = Modifier.fillMaxSize()
             ) {

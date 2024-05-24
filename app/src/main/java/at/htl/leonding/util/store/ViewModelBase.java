@@ -9,8 +9,8 @@ import io.reactivex.rxjava3.disposables.Disposable;
  * In a lot of texts the term "Model-View-ViewModel" is often explained incorrectly.
  * For a detailed explanation of MVVM
  * watch the first 17 minutes of <a href="https://www.youtube.com/watch?v=W1ymVx6dmvc">Lecture 3 | Stanford CS193p 2023</a>.
- * In that text replace "SwiftUI" -> Jetpack; Compose "Swift" -> Java; "struct" -> record
- * @param <M> the type of the submodel
+ * In that text replace "SwiftUI" -> Jetpack Compose/"Swift" -> Java/"struct" -> record
+ * @param <M> the type of the sub-model
  */
 public abstract class ViewModelBase<M> extends StoreBase<M> {
     protected final Store store;
@@ -21,9 +21,13 @@ public abstract class ViewModelBase<M> extends StoreBase<M> {
         this.store = store;
         subscription = store
                 .pipe
-                .map(model -> toSubModel(model))
+                .map(this::toSubModel)
                 .distinctUntilChanged()
-                .subscribe(model -> pipe.onNext(model));
+                .subscribe(pipe::onNext);
     }
+    M convert(Model model) {
+        return toSubModel(model);
+    }
+    /** map the "big" model to our HomeModel */
     protected abstract M toSubModel(Model model);
 }

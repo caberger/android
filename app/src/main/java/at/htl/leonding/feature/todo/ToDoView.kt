@@ -19,19 +19,17 @@ import javax.inject.Inject
 
 class ToDoView @Inject constructor() {
     @Inject
-    lateinit var store: Store
+    lateinit var toDoViewModel: ToDoViewModel
 
     @Composable
     fun ToDos() {
-        val modelObservable = store.pipe.distinctUntilChanged().subscribeAsState(store.get())
-        val toDos = modelObservable.value.toDos
-        val todos = remember { mutableStateOf(toDos)}
-
+        val model = toDoViewModel.pipe.subscribeAsState(ToDoViewModel.ToDoModel()).value
+        val todos = model.todos
         LazyColumn (modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)) {
-            items(todos.value.size) { index ->
-                ToDoRow(toDo = todos.value[index])
+            items(todos.size) { index ->
+                ToDoRow(toDo = todos[index])
             }
         }
     }
