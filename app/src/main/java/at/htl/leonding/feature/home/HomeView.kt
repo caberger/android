@@ -80,7 +80,7 @@ class HomeView @Inject constructor() {
     }
     @Preview(showBackground = true)
     @Composable
-    fun HomeScreenPreview() {
+    fun HomeViewPreview() {
         CompositionLocalProvider(isPreviewMode provides true) {
             homeScreenViewModel = HomeViewModel(Store(), null)
             ToDoTheme {

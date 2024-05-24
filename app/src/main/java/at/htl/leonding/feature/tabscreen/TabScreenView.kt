@@ -80,7 +80,7 @@ class TabScreenView @Inject constructor() {
     }
     @Preview(showBackground = true)
     @Composable
-    fun TabScreenPreview() {
+    fun TabScreenViewPreview() {
         CompositionLocalProvider(isPreviewMode provides true) {
             tabScreenViewModel = TabScreenViewModel(Store())
             ToDoTheme {

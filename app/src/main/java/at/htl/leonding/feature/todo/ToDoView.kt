@@ -42,7 +42,7 @@ class ToDoView @Inject constructor() {
     }
     @Preview(showBackground = true)
     @Composable
-    fun HomeScreenPreview() {
+    fun TodoViewPreview() {
         CompositionLocalProvider(isPreviewMode provides true) {
             toDoViewModel = ToDoViewModel(Store())
             ToDoTheme {
