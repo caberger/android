@@ -6,9 +6,9 @@ The App uses the Model-View-ViewModel design pattern [^mvvm].
 The following enterprise APIs are used
 
 - [Microprofile config](https://microprofile.io/specifications/microprofile-config/) to store configuration settings in application.properties
-- [Microprofile rest client](https://microprofile.io/specifications/microprofile-rest-client/) to consume rest - apis unsing RestEasy Client
+- [Microprofile rest client](https://microprofile.io/specifications/microprofile-rest-client/) to consume rest - apis using RestEasy Client
 - [Jakarta Dependency Injection](https://projects.eclipse.org/projects/ee4j.cdi) implemented with Dagger Hilt
-- [RxJava](https://reactivex.io/) to handle the Single [Source Of Truth](https://redux.js.org/understanding/thinking-in-redux/motivation) design pattern (see also [Immer.java](./app/src/main/java/at/htl/leonding/util/immer/Immer.java))
+- [RxJava](https://reactivex.io/) to handle the reactive nature of our ui (see also [Immer.java](./app/src/main/java/at/htl/leonding/util/immer/Immer.java))
 
 We follow a [Single Source Of Truth](https://redux.js.org/understanding/thinking-in-redux/three-principles) Application Design
 using the [Motivation](https://redux.js.org/understanding/thinking-in-redux/motivation) from the [Three Principles](https://redux.js.org/understanding/thinking-in-redux/three-principles)
