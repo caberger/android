@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
  * @param <M> the type of the sub-model
  */
 public abstract class ViewModelBase<M> extends StoreBase<M> {
-    protected final Store store;
+    public final Store store;
     Disposable subscription;
 
     protected ViewModelBase(Class<? extends M> type, Store store, M initialState) {

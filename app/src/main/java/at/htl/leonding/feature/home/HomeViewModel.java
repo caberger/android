@@ -20,9 +20,8 @@ import io.reactivex.rxjava3.disposables.Disposable;
 public class HomeViewModel extends ViewModelBase<HomeViewModel.HomeModel> {
 
     /** the model for our HomeView, which only knows about a list of todos and a greeting text */
-    public static class HomeModel {
-        public int numberOfToDos;
-        public String greetingText = "";
+    public static record HomeModel(int numberOfToDos, String greetingext) {
+        HomeModel() { this(0, "Hello, world!"); }
     }
     final ToDoService toDoService;
 
@@ -33,10 +32,7 @@ public class HomeViewModel extends ViewModelBase<HomeViewModel.HomeModel> {
     }
     @Override
     protected HomeModel toSubModel(Model model) {
-        var next = new HomeModel();
-        next.greetingText = model.greetingModel.greetingText;
-        next.numberOfToDos = model.toDos.length;
-        return next;
+        return new HomeModel(model.toDos.length, model.greetingModel.greetingText);
     }
     public void setGreetingText(String text) {
         store.apply(model -> model.greetingModel.greetingText = text);

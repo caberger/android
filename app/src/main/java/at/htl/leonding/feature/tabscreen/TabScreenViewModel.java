@@ -9,9 +9,10 @@ import at.htl.leonding.util.store.ViewModelBase;
 
 @Singleton
 public class TabScreenViewModel extends ViewModelBase<TabScreenViewModel.TabScreenModel> {
-    public static class TabScreenModel {
-        public int numberOfTodos = 0;
-        public int selectedTab = 0;
+    public static record TabScreenModel(int getNumberOfToDos, int selectedTab) {
+        public TabScreenModel() {
+            this(0, 0);
+        }
     }
     @Inject
     TabScreenViewModel(Store store) {
@@ -20,10 +21,7 @@ public class TabScreenViewModel extends ViewModelBase<TabScreenViewModel.TabScre
 
     @Override
     protected TabScreenModel toSubModel(Model model) {
-        var tsModel = new TabScreenModel();
-        tsModel.numberOfTodos = model.toDos.length;
-        tsModel.selectedTab = model.uiState.selectedTab;
-        return tsModel;
+        return new TabScreenModel(model.toDos.length, model.uiState.selectedTab);
     }
     public void selectTab(int tab) {
         store.apply(model -> model.uiState.selectedTab = tab);

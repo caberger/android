@@ -15,7 +15,6 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -28,11 +27,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import at.htl.leonding.feature.home.HomeView
 import at.htl.leonding.feature.settings.SettingsScreen
 import at.htl.leonding.feature.todo.ToDoView
-import at.htl.leonding.model.Model
-import at.htl.leonding.model.ToDo
 
-class TabScreenView {
-    private val localPreviewMode: ProvidableCompositionLocal<Boolean> = compositionLocalOf { false }
+/** use dummy data for preview mode if set to true */
+public val isPreviewMode = compositionLocalOf { false }
+
+class TabScreenView @Inject constructor() {
     private final val TAG = TabScreenView::class.simpleName
 
     @Inject
@@ -42,14 +41,11 @@ class TabScreenView {
     @Inject
     lateinit var toDoView: ToDoView
 
-    @Inject constructor() {}
-
     @Composable
-    fun TabScreenLayout() {
+    fun TabScreen() {
         var model = tabScreenViewModel.pipe.subscribeAsState(initial = TabScreenViewModel.TabScreenModel())
         val selectedTab = remember { mutableIntStateOf(model.value.selectedTab) }
-        //val numberOfTodos = remember { mutableIntStateOf(model.value.numberOfTodos) }
-        val numberOfTodos = model.value.numberOfTodos
+        val numberOfTodos = model.value.numberOfToDos
         val tabs = listOf("Home", "ToDos", "Settings")
         Log.i(TAG, "number of totos: ${numberOfTodos}")
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -73,7 +69,7 @@ class TabScreenView {
                     )
                 }
             }
-            if (!localPreviewMode.current) {
+            if (!isPreviewMode.current) {
                 when (selectedTab.value) {
                     0 -> homeScreenView?.HomeScreen()
                     1 -> toDoView?.ToDos()
@@ -82,17 +78,11 @@ class TabScreenView {
             }
         }
     }
-    @Composable
-    fun TabScreen() {
-        if (localPreviewMode.current) {
-            tabScreenViewModel = TabScreenViewModel(Store())
-        }
-        TabScreenLayout()
-    }
     @Preview(showBackground = true)
     @Composable
     fun TabScreenPreview() {
-        CompositionLocalProvider(localPreviewMode provides true) {
+        CompositionLocalProvider(isPreviewMode provides true) {
+            tabScreenViewModel = TabScreenViewModel(Store())
             ToDoTheme {
                 TabScreen()
             }
