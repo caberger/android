@@ -6,6 +6,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import at.htl.leonding.model.HomeScreenViewModel
 import at.htl.leonding.model.Store
 import at.htl.leonding.model.Model
 import at.htl.leonding.model.ToDoService
@@ -18,12 +19,18 @@ import javax.inject.Singleton
  * Our State is delivered exclusively from our {@link Store}, which we subscribe here.
  */
 @Singleton
-class MainViewBuilder {
+class MainView {
     @Inject
     lateinit var store: Store
 
     @Inject
+    lateinit var homeScreenViewModel: HomeScreenViewModel
+
+    @Inject
     lateinit var toDoService: ToDoService
+
+    @Inject
+    lateinit var tabScreenView: TabScreenView
 
     @Inject
     constructor() {
@@ -31,14 +38,14 @@ class MainViewBuilder {
     fun setContentOfActivity(activity: ComponentActivity) {
         val view = ComposeView(activity)
         view.setContent {
-            val viewModel = store.pipe
+            val model = store.pipe
                 .observeOn(AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
                 .subscribeAsState(initial = Model()).value
             Surface(
                 modifier = Modifier.fillMaxSize()
             ) {
-                TabScreen(viewModel, store, toDoService)
+                tabScreenView.TabScreen()
             }   
         }
         activity.setContentView(view)

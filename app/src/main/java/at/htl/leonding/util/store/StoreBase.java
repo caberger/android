@@ -24,6 +24,9 @@ public class StoreBase<T> {
         }
     }
 
+    public T get() {
+        return immer.mapper.clone(pipe.getValue());
+    }
     /** clone the current Model, apply the recipe to it and submit it to the pipe as the next Model.
      * @param recipe
      * The function that receives a clone of the current model and applies its changes to it.

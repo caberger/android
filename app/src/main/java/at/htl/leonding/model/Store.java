@@ -9,7 +9,7 @@ import at.htl.leonding.util.store.StoreBase;
 @Singleton
 public class Store extends StoreBase<Model> {
     @Inject
-    Store() {
+    public Store() {
         super(Model.class, new Model());
     }
 
