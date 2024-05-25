@@ -7,13 +7,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import at.htl.leonding.feature.tabscreen.isPreviewMode
+import at.htl.leonding.isPreviewMode
 import at.htl.leonding.model.Store
 import at.htl.leonding.model.ToDo
 import at.htl.leonding.ui.theme.ToDoTheme
@@ -40,16 +39,6 @@ class ToDoView @Inject constructor() {
             Text(text = toDo.title, overflow = TextOverflow.Ellipsis, maxLines = 1)
         }
     }
-    @Preview(showBackground = true)
-    @Composable
-    fun TodoViewPreview() {
-        CompositionLocalProvider(isPreviewMode provides true) {
-            toDoViewModel = ToDoViewModel(Store())
-            ToDoTheme {
-                ToDos()
-            }
-        }
-    }
     @Composable
     fun todos(model: ToDoViewModel.ToDoModel): List<ToDo> {
         val todos: List<ToDo>
@@ -65,5 +54,15 @@ class ToDoView @Inject constructor() {
             todos = listOf(createToDo(1, "test"), createToDo(2, "commit"))
         }
         return todos
+    }
+    @Preview(showBackground = true)
+    @Composable
+    fun TodoViewPreview() {
+        CompositionLocalProvider(isPreviewMode provides true) {
+            toDoViewModel = ToDoViewModel(Store())
+            ToDoTheme {
+                ToDos()
+            }
+        }
     }
 }

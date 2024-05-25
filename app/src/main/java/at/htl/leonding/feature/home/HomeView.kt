@@ -10,7 +10,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rxjava3.subscribeAsState
@@ -21,7 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import at.htl.leonding.feature.tabscreen.isPreviewMode
+import at.htl.leonding.isPreviewMode
 import at.htl.leonding.model.Store
 import at.htl.leonding.ui.theme.ToDoTheme
 import javax.inject.Inject
@@ -36,7 +35,7 @@ class HomeView @Inject constructor() {
     @Composable
     fun HomeScreen() {
         val model = homeScreenViewModel.pipe.subscribeAsState(HomeViewModel.HomeModel())
-        val text = remember { mutableStateOf(model.value.greetingext) }
+        val text = remember { mutableStateOf(model.value.greetingText) }
 
         SideEffect {
             homeScreenViewModel.setGreetingText(text.value);

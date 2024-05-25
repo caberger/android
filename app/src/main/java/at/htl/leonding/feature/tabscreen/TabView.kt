@@ -1,7 +1,9 @@
 package at.htl.leonding.feature.tabscreen
 
-import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -15,39 +17,39 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rxjava3.subscribeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import at.htl.leonding.model.Store
-import at.htl.leonding.ui.theme.ToDoTheme
-import javax.inject.Inject
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import at.htl.leonding.feature.home.HomeView
 import at.htl.leonding.feature.settings.SettingsScreen
 import at.htl.leonding.feature.todo.ToDoView
+import at.htl.leonding.isPreviewMode
+import at.htl.leonding.model.Store
+import at.htl.leonding.ui.theme.ToDoTheme
+import javax.inject.Inject
 
-/** use dummy data for preview mode if set to true */
-public val isPreviewMode = compositionLocalOf { false }
-
-class TabScreenView @Inject constructor() {
-    private final val TAG = TabScreenView::class.simpleName
-
+class TabView @Inject constructor() {
     @Inject
-    lateinit var tabScreenViewModel: TabScreenViewModel
+    lateinit var tabScreenViewModel: TabViewModel
     @Inject
     lateinit var homeScreenView: HomeView
     @Inject
     lateinit var toDoView: ToDoView
 
     @Composable
-    fun TabScreen() {
-        var model = tabScreenViewModel.pipe.subscribeAsState(initial = TabScreenViewModel.TabScreenModel())
-        val selectedTab = remember { mutableIntStateOf(model.value.selectedTab) }
+    fun TabViewLayout() {
+        val model = tabScreenViewModel.pipe.subscribeAsState(initial = TabViewModel.TabScreenModel())
+        val tab = model.value.selectedTab
+        val tabIndex = tab.index()
+        val selectedTab = remember { mutableIntStateOf(tabIndex) }
         val numberOfTodos = model.value.numberOfToDos
         val tabs = listOf("Home", "ToDos", "Settings")
-        Log.i(TAG, "number of totos: ${numberOfTodos}")
         Column(modifier = Modifier.fillMaxWidth()) {
             TabRow(selectedTabIndex = selectedTab.value) {
                 tabs.forEachIndexed { index, title ->
@@ -55,7 +57,7 @@ class TabScreenView @Inject constructor() {
                         selected = selectedTab.value == index,
                         onClick = {
                             selectedTab.value = index
-                            tabScreenViewModel.selectTab(index)
+                            tabScreenViewModel.selectTabByIndex(index)
                         },
                         icon = {
                             when (index) {
@@ -69,12 +71,33 @@ class TabScreenView @Inject constructor() {
                     )
                 }
             }
-            if (!isPreviewMode.current) {
-                when (selectedTab.value) {
-                    0 -> homeScreenView?.HomeScreen()
-                    1 -> toDoView?.ToDos()
-                    2 -> SettingsScreen()
-                }
+            ContentArea(selectedTab.value)
+        }
+    }
+    @Composable
+    fun ContentArea(selectedTab: Int) {
+        if (!isPreviewMode.current) {
+            when (selectedTab) {
+                0 -> homeScreenView.HomeScreen()
+                1 -> toDoView.ToDos()
+                2 -> SettingsScreen()
+            }
+        } else {
+            PreviewContentArea()
+        }
+    }
+    @Composable
+    fun PreviewContentArea() {
+        Column(modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center) {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = "This is the content of the selected tab",
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
@@ -82,9 +105,10 @@ class TabScreenView @Inject constructor() {
     @Composable
     fun TabScreenViewPreview() {
         CompositionLocalProvider(isPreviewMode provides true) {
-            tabScreenViewModel = TabScreenViewModel(Store())
+            tabScreenViewModel = TabViewModel(Store())
+            
             ToDoTheme {
-                TabScreen()
+                TabViewLayout()
             }
         }
     }

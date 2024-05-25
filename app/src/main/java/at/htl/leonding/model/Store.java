@@ -12,8 +12,4 @@ public class Store extends StoreBase<Model> {
     public Store() {
         super(Model.class, new Model());
     }
-
-    public void selectTab(int tabIndex) {
-        apply(model -> model.uiState.selectedTab = tabIndex);
-    }
 }
