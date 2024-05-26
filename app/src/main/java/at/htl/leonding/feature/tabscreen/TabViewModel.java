@@ -12,11 +12,13 @@ import at.htl.leonding.util.store.ViewModelBase;
 
 @Singleton
 public class TabViewModel extends ViewModelBase<TabViewModel.TabScreenModel> {
+
+    /** all the TabView needs to know is the number of todos and the selected tab */
     public record TabScreenModel(int getNumberOfToDos, UIState.Tab selectedTab) {}
 
     @Inject
     TabViewModel(Store store) {
-        super(TabScreenModel.class, store);
+        super(store);
     }
     @Override
     protected TabScreenModel toViewModel(Model model) {

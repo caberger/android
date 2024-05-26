@@ -12,14 +12,15 @@ import io.reactivex.rxjava3.subjects.Subject;
  * For a detailed explanation of MVVM
  * watch the first 17 minutes of <a href="https://www.youtube.com/watch?v=W1ymVx6dmvc">Lecture 3 | Stanford CS193p 2023</a>.
  * In that text replace "SwiftUI" -> Jetpack Compose/"Swift" -> Java/"struct" -> record
- * @param <T> the type of the sub-model
+ * @param <T> the type of the view model
  */
 public abstract class ViewModelBase<T> {
-    public final Store store;
     public final Subject<T> subject = PublishSubject.create();
-    Disposable subscription;
 
-    protected ViewModelBase(Class<? extends T> type, Store store) {
+    protected final Store store;
+    private final Disposable subscription;
+
+    protected ViewModelBase(Store store) {
         this.store = store;
         this.subscription = store.pipe
                 .map(this::toViewModel)

@@ -16,20 +16,21 @@ import at.htl.leonding.util.store.ViewModelBase;
 @Singleton
 public class HomeViewModel extends ViewModelBase<HomeViewModel.HomeModel> {
 
-    /** the model for our HomeView, which only knows about a list of todos and a greeting text */
+    /** the model for our HomeView, which only knows about a list of todos a text and the orientation */
     public record HomeModel(int numberOfToDos, String greetingText, UIState.Orientation orientation) {}
 
-    final ToDoService toDoService;
+    private final ToDoService toDoService;
 
     @Inject
     HomeViewModel(Store store, ToDoService toDoService) {
-        super(HomeModel.class, store);
+        super(store);
         this.toDoService = toDoService;
     }
     @Override
     protected HomeModel toViewModel(Model model) {
         return new HomeModel(model.toDos.length, model.greetingModel.greetingText, model.uiState.orientation);
     }
+
     public void setGreetingText(String text) {
         store.apply(model -> model.greetingModel.greetingText = text);
     }

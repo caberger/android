@@ -16,7 +16,7 @@ public class ToDoViewModel extends ViewModelBase<ToDoViewModel.ToDoModel> {
 
     @Inject
     public ToDoViewModel(Store store) {
-        super(ToDoModel.class, store);
+        super(store);
     }
     @Override
     protected ToDoModel toViewModel(Model model) {
