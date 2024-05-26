@@ -10,8 +10,7 @@ import at.htl.leonding.feature.todo.ToDoService;
 import at.htl.leonding.model.UIState;
 import at.htl.leonding.util.store.ViewModelBase;
 
-/** The HomeViewModel translates between our global application state and
- * the model how our small HomeView sees the world.
+/** Map our global application state to vision that our HomeView has of the world.
  */
 @Singleton
 public class HomeViewModel extends ViewModelBase<HomeViewModel.HomeModel> {

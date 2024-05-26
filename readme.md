@@ -21,21 +21,12 @@ of truth design always automatically keeps the badge showing the number of todos
 
 ## Building
 
-We did not check in gradle wrapper jar files, because this is not our source code and besides that we do not check in generated jar files at all.
-You must have gradle installed.
-
-``` bash
-brew update
-brew upgrade
-brew install gradle
-```
-Before opening the project in Android Studio for the first time, run the following command once:
+We did not check in gradle wrapper jar files, because this is not our source code and besides that we do not check in generated jar files at all. Open the project in Android studio. For a command line build you must run the following:
 
 ``` bash
 gradle wrapper
 ```
-
-Then you can built the project either from the command line with ./gradlew or use Android Studio.
+Then you can built the project either from the command line with ./gradlew instead of Android Studio.
 
 [^compose]: except for the Composables where kotlin is used in the layout files instead of .xml
 [^mvvm]: watch the first 17 minutes of [Lecture 3 | Stanford CS193p 2023](https://www.youtube.com/watch?v=W1ymVx6dmvc") and replace "Swift" -> Java / "SwiftUI" -> Jetpack Compose.
