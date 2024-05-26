@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import at.htl.leonding.isPreviewMode
+import at.htl.leonding.LocalIsPreviewMode
 import at.htl.leonding.model.Store
 import at.htl.leonding.model.ToDo
 import at.htl.leonding.ui.theme.ToDoTheme
@@ -24,7 +24,7 @@ class ToDoView @Inject constructor() {
 
     @Composable
     fun ToDos() {
-        val model = toDoViewModel.pipe.subscribeAsState(ToDoViewModel.ToDoModel()).value
+        val model = toDoViewModel.subject.subscribeAsState(toDoViewModel.current()).value
         val todos = todos(model)
         LazyColumn(modifier = Modifier
             .fillMaxSize()
@@ -42,7 +42,7 @@ class ToDoView @Inject constructor() {
     @Composable
     fun todos(model: ToDoViewModel.ToDoModel): List<ToDo> {
         val todos: List<ToDo>
-        if (!isPreviewMode.current) {
+        if (!LocalIsPreviewMode.current) {
             todos = model.toDos
         } else {
             fun createToDo(id: Long, title: String): ToDo {
@@ -57,8 +57,8 @@ class ToDoView @Inject constructor() {
     }
     @Preview(showBackground = true)
     @Composable
-    fun TodoViewPreview() {
-        CompositionLocalProvider(isPreviewMode provides true) {
+    fun ToDoViewPreview() {
+        CompositionLocalProvider(LocalIsPreviewMode provides true) {
             toDoViewModel = ToDoViewModel(Store())
             ToDoTheme {
                 ToDos()

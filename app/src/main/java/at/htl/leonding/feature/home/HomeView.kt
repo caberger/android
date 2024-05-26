@@ -20,8 +20,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import at.htl.leonding.isPreviewMode
+import at.htl.leonding.LocalIsPreviewMode
 import at.htl.leonding.model.Store
+import at.htl.leonding.model.UIState
 import at.htl.leonding.ui.theme.ToDoTheme
 import javax.inject.Inject
 
@@ -34,9 +35,12 @@ class HomeView @Inject constructor() {
 
     @Composable
     fun HomeScreen() {
-        val model = homeScreenViewModel.pipe.subscribeAsState(HomeViewModel.HomeModel())
+        val model = homeScreenViewModel.subject.subscribeAsState(homeScreenViewModel.current());
         val text = remember { mutableStateOf(model.value.greetingText) }
+        //val orientation = remember { mutableStateOf(model.value.orientation) }
+        val orientation = model.value.orientation
 
+        /** we update the model whenever the text is changed by the user */
         SideEffect {
             homeScreenViewModel.setGreetingText(text.value);
         }
@@ -58,29 +62,47 @@ class HomeView @Inject constructor() {
                     .align(Alignment.CenterHorizontally)
                     .padding(16.dp)
             ) {
-                TextField(text.value, { text.value = it })
+                TextField(model.value.greetingText, { text.value = it })
             }
             Row(Modifier.align(Alignment.CenterHorizontally)) {
                 Text("${model.value.numberOfToDos} Todos have been loaded")
             }
-            Row(Modifier.align(Alignment.CenterHorizontally)) {
-                Button(modifier = Modifier.padding(16.dp),
-                    onClick = { homeScreenViewModel.loadAllTodos() }) {
-                    Text("load Todos now")
+            if (orientation == UIState.Orientation.landscape) {
+                Row(Modifier.align(Alignment.CenterHorizontally)) {
+                    Buttons(Modifier.align(Alignment.CenterVertically))
                 }
-            }
-            Row(Modifier.align(Alignment.CenterHorizontally)) {
-                Button(
-                    onClick = { homeScreenViewModel.cleanToDos()}) {
-                    Text("clean Todos")
-                }
+            } else {
+                Buttons(Modifier.align(Alignment.CenterHorizontally))
             }
         }
+    }
+    @Composable
+    fun LoadAllToDosButton(modifier: Modifier) {
+        Row(modifier) {
+            Button(modifier = Modifier.padding(16.dp),
+                onClick = { homeScreenViewModel.loadAllTodos() }) {
+                Text("load Todos now")
+            }
+        }
+    }
+    @Composable
+    fun ClearButton(modifier: Modifier) {
+        Row(modifier) {
+            Button(
+                onClick = { homeScreenViewModel.cleanToDos()}) {
+                Text("clean Todos")
+            }
+        }
+    }
+    @Composable
+    fun Buttons(modifier: Modifier) {
+        LoadAllToDosButton(modifier)
+        ClearButton(modifier)
     }
     @Preview(showBackground = true)
     @Composable
     fun HomeViewPreview() {
-        CompositionLocalProvider(isPreviewMode provides true) {
+        CompositionLocalProvider(LocalIsPreviewMode provides true) {
             homeScreenViewModel = HomeViewModel(Store(), null)
             ToDoTheme {
                 HomeScreen()

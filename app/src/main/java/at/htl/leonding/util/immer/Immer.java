@@ -2,6 +2,7 @@ package at.htl.leonding.util.immer;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -17,6 +18,7 @@ import at.htl.leonding.util.mapper.Mapper;
  */
 
 public class Immer<T> {
+    private static final String TAG = Immer.class.getSimpleName();
     final public Mapper<T> mapper;
     final Handler handler;
 
@@ -38,7 +40,10 @@ public class Immer<T> {
             recipe.accept(t);
             var nextAsJson = mapper.toResource(t);
             if (!nextAsJson.equals(currentAsJson)) {
+                Log.d(TAG, String.format("=== state changed ===\n%s\n=>\n%s---", currentAsJson, nextAsJson));
                 resultConsumer.accept(t);
+            } else {
+                Log.w(TAG, "produce() without change");
             }
         });
         CompletableFuture

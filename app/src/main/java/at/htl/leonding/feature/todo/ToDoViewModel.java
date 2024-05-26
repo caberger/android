@@ -12,15 +12,14 @@ import at.htl.leonding.util.store.ViewModelBase;
 
 @Singleton
 public class ToDoViewModel extends ViewModelBase<ToDoViewModel.ToDoModel> {
-    public static record ToDoModel(List<ToDo> toDos) {
-        public ToDoModel() { this(List.of()); }
-    }
+    public record ToDoModel(List<ToDo> toDos) {}
+
     @Inject
     public ToDoViewModel(Store store) {
-        super(ToDoModel.class, store, new ToDoModel());
+        super(ToDoModel.class, store);
     }
     @Override
-    protected ToDoModel toSubModel(Model model) {
+    protected ToDoModel toViewModel(Model model) {
         return new ToDoModel(List.of(model.toDos));
     }
 }

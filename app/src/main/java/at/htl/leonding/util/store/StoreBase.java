@@ -1,5 +1,7 @@
 package at.htl.leonding.util.store;
 
+import android.util.Log;
+
 import java.util.concurrent.CompletionException;
 import java.util.function.Consumer;
 

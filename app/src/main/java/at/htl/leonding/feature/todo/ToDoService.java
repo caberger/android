@@ -26,12 +26,16 @@ public class ToDoService {
         toDoClient = builder.build(ToDoClient.class, baseUrl);
         this.store = store;
     }
+
+    /** read the first 20 todos from the service.
+     * TODO: add currentPage und pageSize to UIState
+     */
     public void getAll() {
         Consumer<ToDo[]> setToDos = todos -> {
             store.apply(model -> model.toDos = todos);
         };
         CompletableFuture
-                .supplyAsync(toDoClient::all)
+                .supplyAsync(() -> toDoClient.all(0, 20))
                 .thenAccept(setToDos);
     }
 }

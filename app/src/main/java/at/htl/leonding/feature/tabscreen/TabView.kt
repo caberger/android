@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import at.htl.leonding.feature.home.HomeView
 import at.htl.leonding.feature.settings.SettingsScreen
 import at.htl.leonding.feature.todo.ToDoView
-import at.htl.leonding.isPreviewMode
+import at.htl.leonding.LocalIsPreviewMode
 import at.htl.leonding.model.Store
 import at.htl.leonding.ui.theme.ToDoTheme
 import javax.inject.Inject
@@ -44,7 +44,7 @@ class TabView @Inject constructor() {
 
     @Composable
     fun TabViewLayout() {
-        val model = tabScreenViewModel.pipe.subscribeAsState(initial = TabViewModel.TabScreenModel())
+        val model = tabScreenViewModel.subject.subscribeAsState(tabScreenViewModel.current())
         val tab = model.value.selectedTab
         val tabIndex = tab.index()
         val selectedTab = remember { mutableIntStateOf(tabIndex) }
@@ -76,7 +76,7 @@ class TabView @Inject constructor() {
     }
     @Composable
     fun ContentArea(selectedTab: Int) {
-        if (!isPreviewMode.current) {
+        if (!LocalIsPreviewMode.current) {
             when (selectedTab) {
                 0 -> homeScreenView.HomeScreen()
                 1 -> toDoView.ToDos()
@@ -103,8 +103,8 @@ class TabView @Inject constructor() {
     }
     @Preview(showBackground = true)
     @Composable
-    fun TabScreenViewPreview() {
-        CompositionLocalProvider(isPreviewMode provides true) {
+    fun TabViewPreview() {
+        CompositionLocalProvider(LocalIsPreviewMode provides true) {
             tabScreenViewModel = TabViewModel(Store())
             
             ToDoTheme {
