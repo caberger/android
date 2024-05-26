@@ -38,7 +38,6 @@ class HomeView @Inject constructor() {
     fun HomeScreen() {
         val model = homeScreenViewModel.subject.subscribeAsState(homeScreenViewModel.getValue());
         val text = remember { mutableStateOf(model.value.greetingText) }
-        //val orientation = remember { mutableStateOf(model.value.orientation) }
         val orientation = model.value.orientation
 
         /** we update the model whenever the text is changed by the user */
@@ -64,7 +63,9 @@ class HomeView @Inject constructor() {
                     .align(Alignment.CenterHorizontally)
                     .padding(16.dp)
             ) {
-                TextField(model.value.greetingText, { text.value = it })
+                TextField(text.value, {
+                    text.value = it
+                })
             }
             Row(Modifier.align(Alignment.CenterHorizontally)) {
                 Text("${model.value.numberOfToDos} Todos have been loaded")
