@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import at.htl.leonding.LocalIsPreviewMode
 import at.htl.leonding.model.Store
-import at.htl.leonding.model.UIState
 import at.htl.leonding.model.UIState.Orientation
 import at.htl.leonding.ui.theme.ToDoTheme
 import javax.inject.Inject
@@ -71,7 +70,7 @@ class HomeView @Inject constructor() {
                 Text("${model.value.numberOfToDos} Todos have been loaded")
             }
             Spacer(Modifier.weight(1.0f))
-            if (orientation == UIState.Orientation.landscape) {
+            if (orientation == Orientation.landscape) {
                 Row(Modifier.align(Alignment.CenterHorizontally)) {
                     Buttons(Modifier.align(Alignment.CenterVertically))
                 }
@@ -119,12 +118,12 @@ class HomeView @Inject constructor() {
     @Preview(showBackground = true)
     @Composable
     fun HomeViewPreviewPortrait() {
-        preview(UIState.Orientation.portrait)
+        preview(Orientation.portrait)
     }
 
     @Preview(showBackground = true, device = "spec:parent=pixel_5,orientation=landscape")
     @Composable
     fun HomeViewPreviewLandscape() {
-        preview(UIState.Orientation.landscape)
+        preview(Orientation.landscape)
     }
 }
