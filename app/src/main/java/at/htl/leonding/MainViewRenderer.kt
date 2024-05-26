@@ -27,8 +27,6 @@ val LocalIsPreviewMode = staticCompositionLocalOf { false }
  */
 @Singleton
 class MainViewRenderer @Inject constructor() {
-    private val TAG = MainViewRenderer::class.simpleName
-
     @Inject
     lateinit var tabScreenView: TabView
     @Inject
@@ -42,7 +40,6 @@ class MainViewRenderer @Inject constructor() {
                 LaunchedEffect(configuration) {
                     orientation = configuration.orientation
                     val currentOrientation = orientationFromConfiguration(configuration)
-                    Log.i(TAG, "orientation is: ${currentOrientation.name}")
                     store.apply { it.uiState.orientation = currentOrientation }
                 }
                 tabScreenView.TabViewLayout()
