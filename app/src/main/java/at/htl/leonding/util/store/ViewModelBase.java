@@ -29,6 +29,7 @@ public abstract class ViewModelBase<T> {
     public T current() {
         return toViewModel(store.pipe.getValue());
     }
-    /** map the "big" model to our HomeModel */
+
+    /** map the "big" model to our "small" viewmodel */
     protected abstract T toViewModel(Model model);
 }
