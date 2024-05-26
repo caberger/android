@@ -27,7 +27,7 @@ public abstract class ViewModelBase<T> {
                 .distinctUntilChanged()
                 .subscribe(subject::onNext);
     }
-    public T current() {
+    public T getValue() {
         return toViewModel(store.pipe.getValue());
     }
 

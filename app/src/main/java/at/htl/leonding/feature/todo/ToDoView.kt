@@ -24,7 +24,7 @@ class ToDoView @Inject constructor() {
 
     @Composable
     fun ToDos() {
-        val model = toDoViewModel.subject.subscribeAsState(toDoViewModel.current()).value
+        val model = toDoViewModel.subject.subscribeAsState(toDoViewModel.getValue()).value
         val todos = todos(model)
         LazyColumn(modifier = Modifier
             .fillMaxSize()

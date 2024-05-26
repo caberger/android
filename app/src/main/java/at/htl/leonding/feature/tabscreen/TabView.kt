@@ -44,7 +44,7 @@ class TabView @Inject constructor() {
 
     @Composable
     fun TabViewLayout() {
-        val model = tabScreenViewModel.subject.subscribeAsState(tabScreenViewModel.current())
+        val model = tabScreenViewModel.subject.subscribeAsState(tabScreenViewModel.getValue())
         val tab = model.value.selectedTab
         val tabIndex = tab.index()
         val selectedTab = remember { mutableIntStateOf(tabIndex) }

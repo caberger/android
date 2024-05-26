@@ -2,6 +2,7 @@ package at.htl.leonding.feature.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import at.htl.leonding.LocalIsPreviewMode
 import at.htl.leonding.model.Store
 import at.htl.leonding.model.UIState
+import at.htl.leonding.model.UIState.Orientation
 import at.htl.leonding.ui.theme.ToDoTheme
 import javax.inject.Inject
 
@@ -35,7 +37,7 @@ class HomeView @Inject constructor() {
 
     @Composable
     fun HomeScreen() {
-        val model = homeScreenViewModel.subject.subscribeAsState(homeScreenViewModel.current());
+        val model = homeScreenViewModel.subject.subscribeAsState(homeScreenViewModel.getValue());
         val text = remember { mutableStateOf(model.value.greetingText) }
         //val orientation = remember { mutableStateOf(model.value.orientation) }
         val orientation = model.value.orientation
@@ -45,6 +47,7 @@ class HomeView @Inject constructor() {
             homeScreenViewModel.setGreetingText(text.value);
         }
         Column(modifier = Modifier.fillMaxSize()) {
+            Spacer(Modifier.weight(1.0f))
             Row(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -67,6 +70,7 @@ class HomeView @Inject constructor() {
             Row(Modifier.align(Alignment.CenterHorizontally)) {
                 Text("${model.value.numberOfToDos} Todos have been loaded")
             }
+            Spacer(Modifier.weight(1.0f))
             if (orientation == UIState.Orientation.landscape) {
                 Row(Modifier.align(Alignment.CenterHorizontally)) {
                     Buttons(Modifier.align(Alignment.CenterVertically))
@@ -74,6 +78,7 @@ class HomeView @Inject constructor() {
             } else {
                 Buttons(Modifier.align(Alignment.CenterHorizontally))
             }
+            Spacer(Modifier.weight(1.0f))
         }
     }
     @Composable
@@ -99,14 +104,27 @@ class HomeView @Inject constructor() {
         LoadAllToDosButton(modifier)
         ClearButton(modifier)
     }
-    @Preview(showBackground = true)
+
     @Composable
-    fun HomeViewPreview() {
+    fun preview(orientation: Orientation) {
         CompositionLocalProvider(LocalIsPreviewMode provides true) {
-            homeScreenViewModel = HomeViewModel(Store(), null)
+            val store = Store()
+            store.pipe.value!!.uiState.orientation = orientation
+            homeScreenViewModel = HomeViewModel(store, null)
             ToDoTheme {
                 HomeScreen()
             }
         }
+    }
+    @Preview(showBackground = true)
+    @Composable
+    fun HomeViewPreviewPortrait() {
+        preview(UIState.Orientation.portrait)
+    }
+
+    @Preview(showBackground = true, device = "spec:parent=pixel_5,orientation=landscape")
+    @Composable
+    fun HomeViewPreviewLandscape() {
+        preview(UIState.Orientation.landscape)
     }
 }
