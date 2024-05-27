@@ -35,7 +35,7 @@ public class ToDoService {
             store.apply(model -> model.toDos = todos);
         };
         CompletableFuture
-                .supplyAsync(() -> toDoClient.all(0, 20))
+                .supplyAsync(() -> toDoClient.all(0, 40))
                 .thenAccept(setToDos);
     }
 }

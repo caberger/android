@@ -13,7 +13,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import at.htl.leonding.LocalIsPreviewMode
 import at.htl.leonding.ui.theme.ToDoTheme
 
 @Composable
@@ -34,9 +33,7 @@ fun SettingsScreen() {
 @Preview(showBackground = true)
 @Composable
 fun SettingsViewPreview() {
-    CompositionLocalProvider(LocalIsPreviewMode provides true) {
-        ToDoTheme {
-            SettingsScreen()
-        }
+    ToDoTheme {
+        SettingsScreen()
     }
 }

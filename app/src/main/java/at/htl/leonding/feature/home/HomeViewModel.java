@@ -34,7 +34,9 @@ public class HomeViewModel extends ViewModelBase<HomeViewModel.HomeModel> {
         store.apply(model -> model.greetingModel.greetingText = text);
     }
     public void cleanToDos() {
-        store.apply(model -> model.toDos = new ToDo[0]);
+        store.apply(model -> {
+            model.toDos = new ToDo[0];
+        });
     }
     public void loadAllTodos() {
         toDoService.getAll();

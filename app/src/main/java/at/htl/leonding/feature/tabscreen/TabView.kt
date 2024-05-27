@@ -16,20 +16,16 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import at.htl.leonding.feature.home.HomeView
 import at.htl.leonding.feature.settings.SettingsScreen
 import at.htl.leonding.feature.todo.ToDoView
-import at.htl.leonding.LocalIsPreviewMode
 import at.htl.leonding.model.Store
 import at.htl.leonding.ui.theme.ToDoTheme
 import javax.inject.Inject
@@ -76,14 +72,14 @@ class TabView @Inject constructor() {
     }
     @Composable
     fun ContentArea(selectedTab: Int) {
-        if (!LocalIsPreviewMode.current) {
+        if (LocalInspectionMode.current) {
+            PreviewContentArea()
+        } else {
             when (selectedTab) {
                 0 -> homeScreenView.HomeScreen()
                 1 -> toDoView.ToDos()
                 2 -> SettingsScreen()
             }
-        } else {
-            PreviewContentArea()
         }
     }
     @Composable
@@ -92,21 +88,15 @@ class TabView @Inject constructor() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
             Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                Text(
-                    text = "This is the content of the selected tab",
-                    textAlign = TextAlign.Center,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                Text(text = "This is the content of the selected tab")
             }
         }
     }
     @Preview(showBackground = true)
     @Composable
     fun TabViewPreview() {
-        CompositionLocalProvider(LocalIsPreviewMode provides true) {
+        if (LocalInspectionMode.current) {
             tabScreenViewModel = TabViewModel(Store())
-            
             ToDoTheme {
                 TabViewLayout()
             }
