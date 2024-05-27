@@ -11,9 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewFontScale
-import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import at.htl.leonding.model.Store
 import at.htl.leonding.model.ToDo
@@ -69,7 +66,8 @@ class ToDoView @Inject constructor() {
     fun ToDoViewPreviewPortrait() {
         preview()
     }
-    @Preview(showBackground = true, device = "spec:parent=Nexus 5,orientation=landscape")
+    @Preview(device = "spec:parent=pixel_5,orientation=landscape")
+    @Preview(name = "150%", fontScale = 1.5f, showBackground = true, device = "spec:parent=Nexus 5,orientation=landscape")
     @Composable
     fun ToDoViewPreviewLandscape() {
         preview()

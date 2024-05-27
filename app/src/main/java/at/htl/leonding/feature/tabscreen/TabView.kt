@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -23,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import at.htl.leonding.feature.home.HomeView
 import at.htl.leonding.feature.settings.SettingsScreen
 import at.htl.leonding.feature.todo.ToDoView
@@ -40,19 +42,19 @@ class TabView @Inject constructor() {
 
     @Composable
     fun TabViewLayout() {
-        val model = tabScreenViewModel.subject.subscribeAsState(tabScreenViewModel.getValue())
+        val model = tabScreenViewModel.subject.subscribeAsState(tabScreenViewModel.value)
         val tab = model.value.selectedTab
         val tabIndex = tab.index()
         val selectedTab = remember { mutableIntStateOf(tabIndex) }
         val numberOfTodos = model.value.numberOfToDos
         val tabs = listOf("Home", "ToDos", "Settings")
         Column(modifier = Modifier.fillMaxWidth()) {
-            TabRow(selectedTabIndex = selectedTab.value) {
+            TabRow(selectedTabIndex = selectedTab.intValue) {
                 tabs.forEachIndexed { index, title ->
                     Tab(text = { Text(title) },
-                        selected = selectedTab.value == index,
+                        selected = selectedTab.intValue == index,
                         onClick = {
-                            selectedTab.value = index
+                            selectedTab.intValue = index
                             tabScreenViewModel.selectTabByIndex(index)
                         },
                         icon = {
@@ -67,7 +69,7 @@ class TabView @Inject constructor() {
                     )
                 }
             }
-            ContentArea(selectedTab.value)
+            ContentArea(selectedTab.intValue)
         }
     }
     @Composable
@@ -87,12 +89,13 @@ class TabView @Inject constructor() {
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
-            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                Text(text = "This is the content of the selected tab")
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally).padding(8.dp)) {
+                Text(text = "Content area of the selected tab", softWrap = true)
             }
         }
     }
     @Preview(showBackground = true)
+    @Preview(name="150%", fontScale = 1.5f)
     @Composable
     fun TabViewPreview() {
         if (LocalInspectionMode.current) {
