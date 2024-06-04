@@ -35,19 +35,22 @@ public class Immer<T> {
      * @param resultConsumer the callback function that uses the cloned & modified model
      */
     public void produce(final T currentState, Consumer<T> recipe, Consumer<T> resultConsumer) {
-        Consumer<T> runOnMainThread = t -> handler.post(() -> {
-            var currentAsJson = mapper.toResource(t);
-            recipe.accept(t);
-            var nextAsJson = mapper.toResource(t);
-            if (!nextAsJson.equals(currentAsJson)) {
-                Log.d(TAG, String.format("=== state changed ===\n%s\n=>\n%s---", currentAsJson, nextAsJson));
-                resultConsumer.accept(t);
-            } else {
-                Log.w(TAG, "produce() without change");
-            }
-        });
-        CompletableFuture
-                .supplyAsync(() -> mapper.clone(currentState))
-                .thenAccept(runOnMainThread);
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            produceNextState(currentState, recipe, resultConsumer);
+        } else {
+            handler.post(() -> produceNextState(currentState, recipe, resultConsumer));
+        }
+    }
+    private void produceNextState(final T state, Consumer<T> recipe, Consumer<T> resultConsumer) {
+        var currentStateAsJson = mapper.toResource(state);
+        var clone = mapper.fromResource(currentStateAsJson);
+        recipe.accept(clone);
+        var nextStateAsJson = mapper.toResource(clone);
+        if (!nextStateAsJson.equals(currentStateAsJson)) {
+            Log.d(TAG, String.format("=== state changed ===\n%s\n=>\n%s---", currentStateAsJson, nextStateAsJson));
+            resultConsumer.accept(clone);
+        } else {
+            Log.w(TAG, "produce() without change");
+        }
     }
 }
