@@ -1,19 +1,21 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 
-    kotlin("kapt") // we have to use kapt, because android hilt is still in alpha although kapt is deprecated already ?! :(
+    //kotlin("kapt") // we have to use kapt, because android hilt is still in alpha although kapt is deprecated already ?! :(
     id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.20"
 }
 
 android {
     namespace = "at.htl.leonding"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "at.htl.leonding"
         minSdk = 28
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -68,6 +70,7 @@ dependencies {
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.ui.tooling.preview)
     implementation(libs.compose.material)
+    implementation(libs.compose.material.icons)
 
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
@@ -82,15 +85,16 @@ dependencies {
     implementation(libs.rxjava.android)
     implementation(libs.compose.rxjava)
 
-    implementation(libs.dagger.hilt)
-    kapt(libs.kapt.hilt)
+    implementation(libs.hilt.android.v2572)
+    ksp(libs.hilt.android.compiler.v2571)
     implementation(libs.fasterxml.jackson)
     implementation(libs.resteasy.client)
     implementation(libs.smallrye.config)
 }
-kapt {
+/*
+ksp {
     correctErrorTypes = true
-}
+}*/
 
 /** JavaDoc helper.
  * This tasks writes the the class-path to a file that can be used with javadoc
@@ -108,4 +112,7 @@ tasks.register("javadoc-params") {
         }
         println("javadoc options written to " + outputFile.absolutePath)
     }
+}
+kotlin {
+    jvmToolchain(17)
 }

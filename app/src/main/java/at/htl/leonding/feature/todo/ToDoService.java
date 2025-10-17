@@ -1,5 +1,7 @@
 package at.htl.leonding.feature.todo;
 
+import android.util.Log;
+
 import org.eclipse.microprofile.config.Config;
 
 import java.util.concurrent.CompletableFuture;
@@ -12,11 +14,11 @@ import at.htl.leonding.model.Store;
 import at.htl.leonding.model.ToDo;
 import at.htl.leonding.util.resteasy.RestApiClientBuilder;
 
-import static java.util.concurrent.CompletableFuture.supplyAsync;
-
 @Singleton
 public class ToDoService {
     public static final String JSON_PLACEHOLDER_BASE_URL_SETTING = "json.placeholder.baseurl";
+    private static final String TAG = ToDoService.class.getSimpleName();
+
     public final ToDoClient toDoClient;
     public final Store store;
 
@@ -36,6 +38,10 @@ public class ToDoService {
         };
         CompletableFuture
                 .supplyAsync(() -> toDoClient.all(0, 40))
-                .thenAccept(setToDos);
+                .thenAccept(setToDos)
+                .exceptionally(e -> {
+                    Log.e(TAG, "failed to load todos", e);
+                    return null;
+                });
     }
 }
